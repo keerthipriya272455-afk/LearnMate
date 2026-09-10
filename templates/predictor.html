@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exam Topic Predictor | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+         LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item">
+
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item">
+
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}"class="side-item active">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+          class="side-item">
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+    <!-- MAIN -->
+    <main class="main-area">
+
+        <!-- KEEPING YOUR FLOATING DECORATIONS -->
+        <div class="floating-dot dot-one"></div>
+        <div class="floating-dot dot-two"></div>
+        <div class="floating-dot dot-three"></div>
+
+        <div class="interface-frame predictor-interface">
+
+            <!-- FLOATING DECORATIONS -->
+            <div class="decor-target">
+                🎯
+            </div>
+
+            <div class="decor-document">
+                📊
+            </div>
+
+
+            <!-- HERO -->
+            <section class="predictor-hero">
+
+                <div class="hero-badge">
+                    ✨ &nbsp; AI POWERED EXAM ANALYSIS
+                </div>
+
+                <h1>
+                    Exam Topic
+                    <span>Predictor</span>
+                </h1>
+
+                <p>
+                    Upload your previous question papers and let
+                    StudyAI discover repeated patterns and identify
+                    the topics you should focus on.
+                </p>
+
+            </section>
+
+
+            <!-- UPLOAD CARD -->
+            <section class="predictor-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        📚
+                    </div>
+
+                    <div>
+                        <h2>
+                            Upload Previous Papers
+                        </h2>
+
+                        <p>
+                            Give StudyAI your previous question
+                            papers to analyze exam patterns.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- UPLOAD -->
+                <label
+                    for="paperFiles"
+                    class="upload-box">
+
+                    <div class="upload-orbit"></div>
+
+                    <div class="upload-content">
+
+                        <div class="upload-symbol">
+                            📄
+                        </div>
+
+                        <h3>
+                            Drop your question papers here
+                        </h3>
+
+                        <p>
+                            or
+                            <strong>click to browse</strong>
+                        </p>
+
+                        <div class="file-types">
+
+                            <span>📕 PDF</span>
+                            <b>•</b>
+                            <span>📘 DOCX</span>
+                            <b>•</b>
+                            <span>Multiple files supported</span>
+
+                        </div>
+
+                    </div>
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="paperFiles"
+                    accept=".pdf,.docx"
+                    multiple
+                    hidden>
+
+
+                <!-- FILE LIST -->
+                <div
+                    id="fileList"
+                    class="file-list">
+                </div>
+
+
+                <!-- PREDICT -->
+                <button
+                    id="predictButton"
+                    class="predict-button"
+                    type="button">
+
+                    <span class="button-icon">
+                        🔮
+                    </span>
+
+                    <span>
+                        Predict Important Topics
+                    </span>
+
+                    <span class="button-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+                <div
+                    id="errorMessage"
+                    class="error-message">
+                </div>
+
+            </section>
+
+
+            <!-- LOADING -->
+            <section
+                id="loading"
+                class="loading-card"
+                style="display:none;">
+
+                <div class="ai-loader">
+
+                    <div class="loader-ring"></div>
+
+                    <div class="loader-icon">
+                        🤖
+                    </div>
+
+                </div>
+
+                <h3>
+                    StudyAI is analyzing your papers
+                </h3>
+
+                <p>
+                    Finding repeated questions and important
+                    exam patterns...
+                </p>
+
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </section>
+
+
+            <!-- RESULTS -->
+            <section
+                id="results"
+                class="results-area"
+                style="display:none;">
+
+
+                <!-- SUMMARY -->
+                <div class="summary-card">
+
+                    <div class="result-icon">
+                        📊
+                    </div>
+
+                    <div>
+
+                        <div class="section-label">
+                            AI ANALYSIS
+                        </div>
+
+                        <h2>
+                            Prediction Summary
+                        </h2>
+
+                        <p id="summaryText"></p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HEADING -->
+                <div class="results-header">
+
+                    <div>
+
+                        <div class="section-label">
+                            EXAM FOCUS
+                        </div>
+
+                        <h2>
+                            Important Topics
+                        </h2>
+
+                    </div>
+
+                    <div class="target-icon">
+                        🎯
+                    </div>
+
+                </div>
+
+
+                <!-- TOPICS -->
+                <div
+                    id="topicsContainer"
+                    class="topics-grid">
+                </div>
+
+
+                <!-- ADVICE -->
+                <div class="advice-card">
+
+                    <div class="advice-icon">
+                        💡
+                    </div>
+
+                    <div>
+
+                        <div class="section-label">
+                            STUDY SMART
+                        </div>
+
+                        <h2>
+                            Study Advice
+                        </h2>
+
+                        <ul id="adviceList"></ul>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const paperFiles =
+    document.getElementById("paperFiles");
+
+const fileList =
+    document.getElementById("fileList");
+
+const predictButton =
+    document.getElementById("predictButton");
+
+const loading =
+    document.getElementById("loading");
+
+const results =
+    document.getElementById("results");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const summaryText =
+    document.getElementById("summaryText");
+
+const topicsContainer =
+    document.getElementById("topicsContainer");
+
+const adviceList =
+    document.getElementById("adviceList");
+
+
+// FILE SELECTION
+
+paperFiles.addEventListener(
+    "change",
+    function () {
+
+        fileList.innerHTML = "";
+
+        const files =
+            paperFiles.files;
+
+        if (files.length === 0) {
+            return;
+        }
+
+        for (
+            let i = 0;
+            i < files.length;
+            i++
+        ) {
+
+            const file =
+                files[i];
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "uploaded-file";
+
+            item.innerHTML = `
+
+                <div class="file-left">
+
+                    <div class="file-icon">
+                        📄
+                    </div>
+
+                    <div>
+
+                        <div class="file-name">
+                            ${escapeHTML(file.name)}
+                        </div>
+
+                        <div class="file-size">
+                            ${formatFileSize(file.size)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="file-check">
+                    ✓
+                </div>
+
+            `;
+
+            fileList.appendChild(item);
+        }
+
+    }
+);
+
+
+// PREDICT
+
+predictButton.addEventListener(
+    "click",
+    async function () {
+
+        const files =
+            paperFiles.files;
+
+        if (files.length === 0) {
+
+            errorMessage.textContent =
+                "⚠ Please upload at least one question paper.";
+
+            return;
+        }
+
+        errorMessage.textContent = "";
+
+        results.style.display = "none";
+
+        loading.style.display = "block";
+
+        predictButton.disabled = true;
+
+        try {
+
+            const formData =
+                new FormData();
+
+            for (
+                let i = 0;
+                i < files.length;
+                i++
+            ) {
+
+                formData.append(
+                    "papers",
+                    files[i]
+                );
+
+            }
+
+            const response =
+                await fetch(
+                    "/api/predict-topics",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (
+                !response.ok ||
+                data.error
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "Prediction failed."
+                );
+
+            }
+
+
+            // SUMMARY
+
+            summaryText.textContent =
+                data.prediction_summary ||
+                "StudyAI completed the analysis.";
+
+
+            // TOPICS
+
+            topicsContainer.innerHTML = "";
+
+            if (
+                data.topics &&
+                data.topics.length
+            ) {
+
+                data.topics.forEach(
+                    function (
+                        item,
+                        index
+                    ) {
+
+                        const card =
+                            document.createElement(
+                                "div"
+                            );
+
+                        card.className =
+                            "topic-result-card";
+
+                        card.style.animationDelay =
+                            `${index * 0.12}s`;
+
+                        const priority =
+                            (
+                                item.priority ||
+                                "MEDIUM"
+                            ).toUpperCase();
+
+                        let priorityClass =
+                            "medium";
+
+                        if (
+                            priority === "HIGH"
+                        ) {
+                            priorityClass = "high";
+                        }
+                        else if (
+                            priority === "LOW"
+                        ) {
+                            priorityClass = "low";
+                        }
+
+                        card.innerHTML = `
+
+                            <div class="topic-number">
+                                ${String(index + 1).padStart(2, "0")}
+                            </div>
+
+                            <div class="topic-result-content">
+
+                                <div class="topic-result-top">
+
+                                    <h3>
+                                        ${escapeHTML(
+                                            item.topic
+                                        )}
+                                    </h3>
+
+                                    <span
+                                        class="priority-badge ${priorityClass}">
+                                        ${escapeHTML(
+                                            priority
+                                        )}
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    ${escapeHTML(
+                                        item.reason || ""
+                                    )}
+                                </p>
+
+                            </div>
+
+                        `;
+
+                        topicsContainer.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+            }
+
+
+            // ADVICE
+
+            adviceList.innerHTML = "";
+
+            if (
+                data.study_advice &&
+                data.study_advice.length
+            ) {
+
+                data.study_advice.forEach(
+                    function (advice) {
+
+                        const li =
+                            document.createElement(
+                                "li"
+                            );
+
+                        li.textContent =
+                            advice;
+
+                        adviceList.appendChild(
+                            li
+                        );
+
+                    }
+                );
+
+            }
+
+            loading.style.display =
+                "none";
+
+            results.style.display =
+                "block";
+
+            results.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        }
+        catch (error) {
+
+            loading.style.display =
+                "none";
+
+            errorMessage.textContent =
+                "❌ " + error.message;
+
+            console.error(
+                "PREDICTOR ERROR:",
+                error
+            );
+
+        }
+        finally {
+
+            predictButton.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+// FILE SIZE
+
+function formatFileSize(bytes) {
+
+    if (bytes < 1024) {
+        return bytes + " B";
+    }
+
+    if (
+        bytes <
+        1024 * 1024
+    ) {
+
+        return (
+            (bytes / 1024).toFixed(1)
+            + " KB"
+        );
+
+    }
+
+    return (
+        (bytes / (1024 * 1024)).toFixed(1)
+        + " MB"
+    );
+
+}
+
+
+// SECURITY
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text || "";
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+</html>

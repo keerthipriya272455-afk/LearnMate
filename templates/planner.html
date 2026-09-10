@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Study Planner | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           PLANNER PAGE
+        ===================================================== */
+
+        .planner-page {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(137, 92, 255, .13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 15% 85%,
+                    rgba(83, 190, 255, .10),
+                    transparent 25%
+                ),
+                #f8f8ff;
+        }
+
+
+        /* =====================================================
+           FLOATING BACKGROUND
+        ===================================================== */
+
+        .planner-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .planner-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: plannerFloat 8s ease-in-out infinite;
+        }
+
+        .planner-orb.one {
+            width: 260px;
+            height: 260px;
+            background: rgba(126, 87, 255, .10);
+            right: -70px;
+            top: 60px;
+        }
+
+        .planner-orb.two {
+            width: 190px;
+            height: 190px;
+            background: rgba(70, 190, 255, .08);
+            left: 120px;
+            bottom: 60px;
+            animation-delay: 2s;
+        }
+
+        .planner-orb.three {
+            width: 90px;
+            height: 90px;
+            background: rgba(190, 90, 255, .08);
+            left: 38%;
+            top: 180px;
+            animation-delay: 4s;
+        }
+
+        @keyframes plannerFloat {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .planner-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1180px;
+            margin: 0 auto;
+
+            padding:
+                55px
+                45px
+                80px;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .planner-hero {
+            text-align: center;
+            margin-bottom: 38px;
+
+            animation:
+                plannerFadeUp
+                .7s
+                ease;
+        }
+
+        .planner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 10px 18px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255,255,255,.85);
+
+            border:
+                1px solid
+                rgba(120,90,255,.18);
+
+            box-shadow:
+                0 8px 30px
+                rgba(80,60,160,.08);
+
+            color: #31304a;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 18px;
+        }
+
+        .planner-hero h1 {
+            margin: 0;
+
+            font-size:
+                clamp(42px, 5vw, 68px);
+
+            line-height: 1;
+
+            color: #11152d;
+
+            font-weight: 850;
+        }
+
+        .planner-hero h1 span {
+
+            display: block;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #7447ff,
+                    #b044ff
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .planner-hero p {
+
+            margin:
+                18px
+                auto
+                0;
+
+            max-width: 700px;
+
+            color: #777991;
+
+            font-size: 17px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           BUILDER
+        ===================================================== */
+
+        .planner-builder {
+
+            background:
+                rgba(255,255,255,.92);
+
+            border:
+                1px solid
+                rgba(125,95,255,.20);
+
+            border-radius: 28px;
+
+            padding: 32px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(70,55,140,.11),
+                0 4px 20px
+                rgba(80,70,130,.05);
+
+            animation:
+                plannerFadeUp
+                .8s
+                ease;
+        }
+
+        .planner-builder-header {
+
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            margin-bottom: 28px;
+        }
+
+        .planner-builder-icon {
+
+            width: 58px;
+            height: 58px;
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 27px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee7ff,
+                    #f5e9ff
+                );
+
+            box-shadow:
+                inset
+                0 0 0 1px
+                rgba(120,80,255,.08);
+        }
+
+        .planner-builder-header h2 {
+
+            margin: 0;
+
+            color: #171a35;
+
+            font-size: 23px;
+        }
+
+        .planner-builder-header p {
+
+            margin:
+                5px
+                0
+                0;
+
+            color: #85869b;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           INPUT GRID
+        ===================================================== */
+
+        .planner-input-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1.5fr
+                1fr
+                .8fr;
+
+            gap: 14px;
+        }
+
+        .planner-field {
+            position: relative;
+        }
+
+        .planner-field label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #55566e;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .planner-field input,
+        .planner-field select {
+
+            width: 100%;
+
+            height: 52px;
+
+            box-sizing: border-box;
+
+            padding:
+                0
+                15px;
+
+            border-radius: 14px;
+
+            border:
+                1px
+                solid
+                #dedeea;
+
+            background:
+                #fafaff;
+
+            color: #24263d;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                .25s ease;
+        }
+
+        .planner-field input:focus,
+        .planner-field select:focus {
+
+            border-color:
+                #8255ff;
+
+            background:
+                white;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(130,85,255,.10);
+        }
+
+
+        /* =====================================================
+           GENERATE BUTTON
+        ===================================================== */
+
+        .planner-button-row {
+
+            margin-top: 20px;
+
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .planner-generate-btn {
+
+            border: none;
+
+            cursor: pointer;
+
+            min-width: 300px;
+
+            height: 54px;
+
+            padding:
+                0
+                28px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #7047ff,
+                    #ad45f4
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 750;
+
+            box-shadow:
+                0 12px 30px
+                rgba(111,70,255,.25);
+
+            transition:
+                .25s ease;
+        }
+
+        .planner-generate-btn:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 17px 38px
+                rgba(111,70,255,.34);
+        }
+
+        .planner-generate-btn:active {
+
+            transform:
+                translateY(0);
+        }
+
+        .planner-generate-btn:disabled {
+
+            opacity: .65;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+        }
+
+        .planner-tip {
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #88899b;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .planner-loading {
+
+            display: none;
+
+            text-align: center;
+
+            padding:
+                55px
+                20px;
+
+            animation:
+                plannerFadeUp
+                .5s
+                ease;
+        }
+
+        .planner-loading-icon {
+
+            width: 75px;
+            height: 75px;
+
+            margin:
+                0
+                auto
+                18px;
+
+            border-radius: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee7ff,
+                    #f6eaff
+                );
+
+            font-size: 34px;
+
+            animation:
+                plannerPulse
+                1.5s
+                ease-in-out
+                infinite;
+        }
+
+        .planner-loading h3 {
+
+            margin: 0;
+
+            color: #20233d;
+
+            font-size: 22px;
+        }
+
+        .planner-loading p {
+
+            color: #85869b;
+        }
+
+        @keyframes plannerPulse {
+
+            0%,100% {
+                transform:
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    scale(1.08);
+            }
+
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .planner-error {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding:
+                15px
+                18px;
+
+            border-radius: 14px;
+
+            background:
+                #fff1f1;
+
+            border:
+                1px
+                solid
+                #ffd0d0;
+
+            color:
+                #c93636;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           RESULT
+        ===================================================== */
+
+        .planner-result {
+
+            display: none;
+
+            margin-top: 32px;
+
+            animation:
+                plannerFadeUp
+                .7s
+                ease;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .planner-summary {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #faf8ff
+                );
+
+            border:
+                1px
+                solid
+                #e4ddff;
+
+            border-radius: 23px;
+
+            padding: 25px;
+
+            margin-bottom: 22px;
+        }
+
+        .planner-summary-title {
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #242641;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+        .planner-summary-text {
+
+            color: #707189;
+
+            line-height: 1.65;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           SUMMARY GRID
+        ===================================================== */
+
+        .planner-summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .planner-summary-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: white;
+
+            border:
+                1px
+                solid
+                #ece9f7;
+
+            border-radius: 14px;
+        }
+
+        .planner-summary-icon {
+
+            font-size: 22px;
+        }
+
+        .planner-summary-item small {
+
+            display: block;
+
+            color: #999aad;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 3px;
+        }
+
+        .planner-summary-item strong {
+
+            color: #252741;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PLAN HEADER
+        ===================================================== */
+
+        .planner-plan-heading {
+
+            display: flex;
+
+            align-items: end;
+
+            justify-content:
+                space-between;
+
+            margin:
+                35px
+                0
+                18px;
+        }
+
+        .planner-plan-heading h2 {
+
+            margin: 0;
+
+            color: #171a35;
+
+            font-size: 27px;
+        }
+
+        .planner-plan-heading p {
+
+            margin:
+                5px
+                0
+                0;
+
+            color: #85869b;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           DAILY CARDS
+        ===================================================== */
+
+        .planner-days {
+
+            display: grid;
+
+            gap: 17px;
+        }
+
+        .planner-day-card {
+
+            background:
+                white;
+
+            border:
+                1px
+                solid
+                #e8e7f1;
+
+            border-radius: 21px;
+
+            padding: 23px;
+
+            display: grid;
+
+            grid-template-columns:
+                75px
+                1fr
+                150px;
+
+            align-items: center;
+
+            gap: 20px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(70,65,120,.06);
+
+            transition:
+                .25s ease;
+
+            animation:
+                plannerFadeUp
+                .5s
+                ease
+                both;
+        }
+
+        .planner-day-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 16px 38px
+                rgba(70,65,120,.10);
+        }
+
+        .planner-day-number {
+
+            width: 64px;
+            height: 64px;
+
+            border-radius: 18px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee7ff,
+                    #f7eaff
+                );
+
+            color:
+                #7047ff;
+        }
+
+        .planner-day-number small {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+        .planner-day-number strong {
+
+            font-size: 22px;
+        }
+
+        .planner-day-info h3 {
+
+            margin:
+                0
+                0
+                6px;
+
+            color:
+                #20233d;
+
+            font-size:
+                17px;
+        }
+
+        .planner-day-info p {
+
+            margin: 0;
+
+            color:
+                #85869b;
+
+            font-size:
+                13px;
+        }
+
+        .planner-focus {
+
+            margin-top: 10px;
+
+            display: inline-block;
+
+            padding:
+                6px
+                10px;
+
+            border-radius: 8px;
+
+            background:
+                #f3efff;
+
+            color:
+                #7047ff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .planner-hours {
+
+            text-align:
+                right;
+        }
+
+        .planner-hours strong {
+
+            display: block;
+
+            color:
+                #252741;
+
+            font-size:
+                20px;
+        }
+
+        .planner-hours span {
+
+            color:
+                #9293a5;
+
+            font-size:
+                11px;
+        }
+
+
+        /* =====================================================
+           CREATE ANOTHER PLAN
+        ===================================================== */
+
+        .planner-restart {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 30px;
+
+            padding-bottom: 20px;
+        }
+
+        .planner-restart button {
+
+            border:
+                1px
+                solid
+                #ded9f4;
+
+            background:
+                white;
+
+            color:
+                #6843e9;
+
+            border-radius:
+                13px;
+
+            padding:
+                12px
+                22px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            transition:
+                .2s ease;
+        }
+
+        .planner-restart button:hover {
+
+            background:
+                #f7f4ff;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =====================================================
+           ANIMATION
+        ===================================================== */
+
+        @keyframes plannerFadeUp {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(20px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width: 900px) {
+
+            .planner-content {
+
+                padding:
+                    35px
+                    20px
+                    60px;
+            }
+
+            .planner-input-grid {
+
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+
+            .planner-summary-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .planner-day-card {
+
+                grid-template-columns:
+                    65px
+                    1fr;
+            }
+
+            .planner-hours {
+
+                grid-column:
+                    2;
+
+                text-align:
+                    left;
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .planner-hero h1 {
+
+                font-size:
+                    43px;
+            }
+
+            .planner-builder {
+
+                padding:
+                    22px;
+
+                border-radius:
+                    22px;
+            }
+
+            .planner-input-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .planner-generate-btn {
+
+                width:
+                    100%;
+
+                min-width:
+                    0;
+            }
+
+            .planner-day-card {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .planner-hours {
+
+                grid-column:
+                    auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app-layout">
+
+
+    <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+            LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item">
+
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item">
+
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}" class="side-item">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+           class="side-item active">
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="main-area planner-page">
+
+
+        <div class="planner-bg">
+
+            <div class="planner-orb one"></div>
+
+            <div class="planner-orb two"></div>
+
+            <div class="planner-orb three"></div>
+
+        </div>
+
+
+        <div class="planner-content">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="planner-hero">
+
+                <div class="planner-badge">
+
+                    ✨
+
+                    <span>
+                        AI STUDY PLANNER
+                    </span>
+
+                </div>
+
+
+                <h1>
+
+                    Create Your
+
+                    <span>
+                        Study Plan
+                    </span>
+
+                </h1>
+
+
+                <p>
+
+                    Turn your syllabus and exam date
+                    into a smart daily study schedule.
+
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 BUILDER
+            ================================================== -->
+
+            <section
+                class="planner-builder"
+                id="plannerBuilder"
+            >
+
+
+                <div class="planner-builder-header">
+
+                    <div class="planner-builder-icon">
+                        📅
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Build Your Study Plan
+                        </h2>
+
+                        <p>
+                            Enter your subject, topics,
+                            exam date and daily study time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="planner-input-grid">
+
+
+                    <div class="planner-field">
+
+                        <label>
+                            SUBJECT
+                        </label>
+
+                        <input
+                            type="text"
+                            id="plannerSubject"
+                            placeholder="e.g. Physics"
+                        >
+
+                    </div>
+
+
+                    <div class="planner-field">
+
+                        <label>
+                            MAIN TOPICS
+                        </label>
+
+                        <input
+                            type="text"
+                            id="plannerTopics"
+                            placeholder="e.g. Electrostatics, Current Electricity"
+                        >
+
+                    </div>
+
+
+                    <div class="planner-field">
+
+                        <label>
+                            EXAM DATE
+                        </label>
+
+                        <input
+                            type="date"
+                            id="plannerExamDate"
+                        >
+
+                    </div>
+
+
+                    <div class="planner-field">
+
+                        <label>
+                            STUDY TIME
+                        </label>
+
+                        <select id="plannerHours">
+
+                            <option value="1">
+                                1 hour/day
+                            </option>
+
+                            <option value="2" selected>
+                                2 hours/day
+                            </option>
+
+                            <option value="3">
+                                3 hours/day
+                            </option>
+
+                            <option value="4">
+                                4 hours/day
+                            </option>
+
+                            <option value="5">
+                                5 hours/day
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="planner-button-row">
+
+                    <button
+                        type="button"
+                        id="plannerGenerateBtn"
+                        class="planner-generate-btn">
+
+                        ✨ Generate My Study Plan →
+
+                    </button>
+
+                </div>
+
+
+                <div class="planner-tip">
+
+                    💡 Add your important topics separated
+                    by commas so StudyAI can divide them
+                    across your available days.
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 LOADING
+            ================================================== -->
+
+            <section
+                id="plannerLoading"
+                class="planner-loading"
+            >
+
+                <div class="planner-loading-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Creating your study plan...
+                </h3>
+
+                <p>
+                    StudyAI is organizing your topics
+                    into daily goals.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 ERROR
+            ================================================== -->
+
+            <div
+                id="plannerError"
+                class="planner-error"
+            ></div>
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================== -->
+
+            <section
+                id="plannerResult"
+                class="planner-result"
+            >
+
+
+                <div class="planner-summary">
+
+                    <div class="planner-summary-title">
+
+                        🧠
+
+                        Your Personalized Plan
+
+                    </div>
+
+
+                    <div
+                        id="plannerSummary"
+                        class="planner-summary-text"
+                    >
+
+                    </div>
+
+                </div>
+
+
+                <div class="planner-plan-heading">
+
+                    <div>
+
+                        <h2>
+                            Your Daily Plan
+                        </h2>
+
+                        <p>
+                            Focus on one clear goal each day.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="plannerCards"
+                    class="planner-days"
+                ></div>
+
+
+                <div class="planner-restart">
+
+                    <button
+                        type="button"
+                        id="plannerRestartBtn">
+
+                        🔄 Create Another Plan
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     PLANNER JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           GET ELEMENTS
+        ===================================================== */
+
+        const generateBtn =
+            document.getElementById(
+                "plannerGenerateBtn"
+            );
+
+        const subjectInput =
+            document.getElementById(
+                "plannerSubject"
+            );
+
+        const topicsInput =
+            document.getElementById(
+                "plannerTopics"
+            );
+
+        const examDateInput =
+            document.getElementById(
+                "plannerExamDate"
+            );
+
+        const hoursInput =
+            document.getElementById(
+                "plannerHours"
+            );
+
+        const builder =
+            document.getElementById(
+                "plannerBuilder"
+            );
+
+        const loading =
+            document.getElementById(
+                "plannerLoading"
+            );
+
+        const errorBox =
+            document.getElementById(
+                "plannerError"
+            );
+
+        const result =
+            document.getElementById(
+                "plannerResult"
+            );
+
+        const summary =
+            document.getElementById(
+                "plannerSummary"
+            );
+
+        const cards =
+            document.getElementById(
+                "plannerCards"
+            );
+
+        const restartBtn =
+            document.getElementById(
+                "plannerRestartBtn"
+            );
+
+
+        /* =====================================================
+           CHECK ELEMENTS
+        ===================================================== */
+
+        if (!generateBtn) {
+
+            console.error(
+                "plannerGenerateBtn not found"
+            );
+
+            return;
+        }
+
+
+        if (!subjectInput) {
+
+            console.error(
+                "plannerSubject not found"
+            );
+
+            return;
+        }
+
+
+        if (!topicsInput) {
+
+            console.error(
+                "plannerTopics not found"
+            );
+
+            return;
+        }
+
+
+        if (!examDateInput) {
+
+            console.error(
+                "plannerExamDate not found"
+            );
+
+            return;
+        }
+
+
+        if (!hoursInput) {
+
+            console.error(
+                "plannerHours not found"
+            );
+
+            return;
+        }
+
+
+        if (!builder) {
+
+            console.error(
+                "plannerBuilder not found"
+            );
+
+            return;
+        }
+
+
+        if (!loading) {
+
+            console.error(
+                "plannerLoading not found"
+            );
+
+            return;
+        }
+
+
+        if (!errorBox) {
+
+            console.error(
+                "plannerError not found"
+            );
+
+            return;
+        }
+
+
+        if (!result) {
+
+            console.error(
+                "plannerResult not found"
+            );
+
+            return;
+        }
+
+
+        /* =====================================================
+           GENERATE BUTTON
+        ===================================================== */
+
+        generateBtn.addEventListener(
+            "click",
+            generatePlan
+        );
+
+
+        /* =====================================================
+           GENERATE PLAN
+        ===================================================== */
+
+        async function generatePlan() {
+
+
+            console.log(
+                "Generate Study Plan clicked"
+            );
+
+
+            const subject =
+                subjectInput.value.trim();
+
+            const topics =
+                topicsInput.value.trim();
+
+            const examDate =
+                examDateInput.value;
+
+            const hours =
+                Number(hoursInput.value);
+
+
+            /* ---------------------------------------------
+               VALIDATION
+            --------------------------------------------- */
+
+            if (!subject) {
+
+                showError(
+                    "Please enter the subject."
+                );
+
+                subjectInput.focus();
+
+                return;
+            }
+
+
+            if (!topics) {
+
+                showError(
+                    "Please enter the main topics."
+                );
+
+                topicsInput.focus();
+
+                return;
+            }
+
+
+            if (!examDate) {
+
+                showError(
+                    "Please select your exam date."
+                );
+
+                examDateInput.focus();
+
+                return;
+            }
+
+
+            /* ---------------------------------------------
+               RESET UI
+            --------------------------------------------- */
+
+            errorBox.style.display =
+                "none";
+
+            result.style.display =
+                "none";
+
+            builder.style.display =
+                "block";
+
+            loading.style.display =
+                "block";
+
+
+            generateBtn.disabled =
+                true;
+
+            generateBtn.textContent =
+                "🧠 Creating Your Plan...";
+
+
+            console.log(
+                "Sending planner request:",
+                {
+                    subject,
+                    topics,
+                    examDate,
+                    hours
+                }
+            );
+
+
+            try {
+
+
+                /* -----------------------------------------
+                   API REQUEST
+                ----------------------------------------- */
+
+                const response =
+                    await fetch(
+                        "/api/generate-study-plan",
+                        {
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    subject:
+                                        subject,
+
+                                    topics:
+                                        topics,
+
+                                    exam_date:
+                                        examDate,
+
+                                    hours_per_day:
+                                        hours
+
+                                })
+
+                        }
+                    );
+
+
+                /* -----------------------------------------
+                   READ SERVER RESPONSE
+                ----------------------------------------- */
+
+                const rawText =
+                    await response.text();
+
+
+                console.log(
+                    "PLANNER SERVER RESPONSE:",
+                    rawText
+                );
+
+
+                let data;
+
+
+                try {
+
+                    data =
+                        JSON.parse(
+                            rawText
+                        );
+
+                }
+
+                catch (jsonError) {
+
+                    console.error(
+                        "JSON ERROR:",
+                        jsonError
+                    );
+
+                    throw new Error(
+                        "The server returned an invalid response. Check your Flask planner API."
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   SERVER ERROR
+                ----------------------------------------- */
+
+                if (!response.ok) {
+
+                    throw new Error(
+
+                        data.error ||
+
+                        "Unable to generate the study plan."
+
+                    );
+
+                }
+
+
+                if (data.error) {
+
+                    throw new Error(
+                        data.error
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   FIND PLAN
+                ----------------------------------------- */
+
+                const plan =
+
+                    data.daily_plan ||
+
+                    data.plan ||
+
+                    data.days ||
+
+                    data.study_plan;
+
+
+                if (!Array.isArray(plan)) {
+
+                    console.error(
+                        "No valid plan found:",
+                        data
+                    );
+
+                    throw new Error(
+                        "No daily study plan was returned by the server."
+                    );
+
+                }
+
+
+                if (plan.length === 0) {
+
+                    throw new Error(
+                        "The AI returned an empty study plan."
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   DISPLAY RESULT
+                ----------------------------------------- */
+
+                loading.style.display =
+                    "none";
+
+                builder.style.display =
+                    "none";
+
+                result.style.display =
+                    "block";
+
+
+                /* -----------------------------------------
+                   SUMMARY
+                ----------------------------------------- */
+
+                summary.innerHTML = `
+
+                    <div class="planner-summary-grid">
+
+                        <div class="planner-summary-item">
+
+                            <span class="planner-summary-icon">
+                                📚
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    SUBJECT
+                                </small>
+
+                                <strong>
+                                    ${escapeHtml(subject)}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="planner-summary-item">
+
+                            <span class="planner-summary-icon">
+                                🎯
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    EXAM DATE
+                                </small>
+
+                                <strong>
+                                    ${formatDate(examDate)}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="planner-summary-item">
+
+                            <span class="planner-summary-icon">
+                                📅
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    STUDY DAYS
+                                </small>
+
+                                <strong>
+                                    ${plan.length} days
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <p style="margin-top:18px;">
+                        ${escapeHtml(
+                            data.summary ||
+                            data.plan_summary ||
+                            `Study ${subject} for ${hours} hour(s) per day until your exam.`
+                        )}
+                    </p>
+
+                `;
+
+
+                /* -----------------------------------------
+                   RENDER DAILY PLAN
+                ----------------------------------------- */
+
+                renderDailyPlan(
+                    plan,
+                    hours
+                );
+
+
+                /* -----------------------------------------
+                   SCROLL TO RESULT
+                ----------------------------------------- */
+
+                result.scrollIntoView({
+
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+
+                });
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "PLANNER ERROR:",
+                    error
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                builder.style.display =
+                    "block";
+
+
+                showError(
+
+                    error.message ||
+
+                    "Something went wrong while creating your study plan."
+
+                );
+
+            }
+
+
+            finally {
+
+                generateBtn.disabled =
+                    false;
+
+                generateBtn.textContent =
+                    "✨ Generate My Study Plan →";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RENDER DAILY PLAN
+        ===================================================== */
+
+        function renderDailyPlan(
+            plan,
+            hours
+        ) {
+
+
+            cards.innerHTML =
+                "";
+
+
+            plan.forEach(
+                function (day, index) {
+
+
+                    const dayNumber =
+
+                        day.day ||
+
+                        day.day_number ||
+
+                        index + 1;
+
+
+                    const mainTopic =
+
+                        day.main_topic ||
+
+                        day.mainTopic ||
+
+                        day.topic ||
+
+                        "Study Topic";
+
+
+                    const focusedTopic =
+
+                        day.focused_topic ||
+
+                        day.focusedTopic ||
+
+                        day.focus ||
+
+                        day.focus_topic ||
+
+                        day.subtopic ||
+
+                        "Important concepts";
+
+
+                    const amount =
+
+                        day.hours ||
+
+                        day.study_hours ||
+
+                        day.study_time ||
+
+                        day.studyTime ||
+
+                        day.duration ||
+
+                        `${hours} hour${hours === 1 ? "" : "s"}`;
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "planner-day-card";
+
+
+                    card.style.animationDelay =
+                        `${index * 0.08}s`;
+
+
+                    card.innerHTML = `
+
+                        <div class="planner-day-number">
+
+                            <small>
+                                DAY
+                            </small>
+
+                            <strong>
+                                ${escapeHtml(
+                                    dayNumber
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="planner-day-info">
+
+                            <h3>
+                                ${escapeHtml(
+                                    mainTopic
+                                )}
+                            </h3>
+
+                            <p>
+
+                                <strong>
+                                    Focused topic:
+                                </strong>
+
+                                ${escapeHtml(
+                                    focusedTopic
+                                )}
+
+                            </p>
+
+
+                            <span class="planner-focus">
+
+                                🎯 Focused Study
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="planner-hours">
+
+                            <strong>
+                                ${escapeHtml(
+                                    String(amount)
+                                )}
+                            </strong>
+
+                            <span>
+                                hours for today
+                            </span>
+
+                        </div>
+
+                    `;
+
+
+                    cards.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CREATE ANOTHER PLAN
+        ===================================================== */
+
+        if (restartBtn) {
+
+            restartBtn.addEventListener(
+                "click",
+                function () {
+
+
+                    console.log(
+                        "Create Another Plan clicked"
+                    );
+
+
+                    /* -----------------------------------------
+                       HIDE RESULT
+                    ----------------------------------------- */
+
+                    result.style.display =
+                        "none";
+
+
+                    /* -----------------------------------------
+                       SHOW BUILDER
+                    ----------------------------------------- */
+
+                    builder.style.display =
+                        "block";
+
+
+                    /* -----------------------------------------
+                       RESET LOADING
+                    ----------------------------------------- */
+
+                    loading.style.display =
+                        "none";
+
+
+                    /* -----------------------------------------
+                       HIDE ERROR
+                    ----------------------------------------- */
+
+                    errorBox.style.display =
+                        "none";
+
+
+                    /* -----------------------------------------
+                       CLEAR GENERATED PLAN
+                    ----------------------------------------- */
+
+                    cards.innerHTML =
+                        "";
+
+                    summary.innerHTML =
+                        "";
+
+
+                    /* -----------------------------------------
+                       RESET BUTTON
+                    ----------------------------------------- */
+
+                    generateBtn.disabled =
+                        false;
+
+                    generateBtn.textContent =
+                        "✨ Generate My Study Plan →";
+
+
+                    /* -----------------------------------------
+                       SCROLL TO FORM
+                    ----------------------------------------- */
+
+                    builder.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+
+                    /* -----------------------------------------
+                       FOCUS SUBJECT
+                    ----------------------------------------- */
+
+                    setTimeout(
+                        function () {
+
+                            subjectInput.focus();
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        function showError(
+            message
+        ) {
+
+
+            loading.style.display =
+                "none";
+
+
+            errorBox.textContent =
+                "❌ " + message;
+
+
+            errorBox.style.display =
+                "block";
+
+        }
+
+
+        /* =====================================================
+           DATE FORMAT
+        ===================================================== */
+
+        function formatDate(
+            dateString
+        ) {
+
+
+            const date =
+                new Date(
+                    dateString +
+                    "T00:00:00"
+                );
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day:
+                        "2-digit",
+
+                    month:
+                        "short",
+
+                    year:
+                        "numeric"
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           HTML SECURITY
+        ===================================================== */
+
+        function escapeHtml(
+            value
+        ) {
+
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>

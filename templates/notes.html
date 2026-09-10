@@ -1,0 +1,2839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Notes | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+
+    <style>
+
+        /* =========================================================
+           NOTES PAGE
+        ========================================================= */
+
+        .notes-page {
+            position: relative;
+
+            min-height: 100vh;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 45px 55px 90px;
+
+            overflow: hidden;
+        }
+
+
+        .notes-container {
+            position: relative;
+
+            z-index: 5;
+
+            width: min(1150px, 100%);
+
+            margin: auto;
+        }
+
+
+
+        /* =========================================================
+           ANIMATED BACKGROUND
+        ========================================================= */
+
+        .notes-bg-dot {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            filter: blur(1px);
+
+        }
+
+
+        .notes-bg-dot.one {
+
+            width: 10px;
+            height: 10px;
+
+            background: #8b5cf6;
+
+            top: 15%;
+
+            left: 17%;
+
+            animation:
+                notesFloatOne 7s ease-in-out infinite;
+
+        }
+
+
+        .notes-bg-dot.two {
+
+            width: 8px;
+            height: 8px;
+
+            background: #e5a7ff;
+
+            top: 35%;
+
+            right: 14%;
+
+            animation:
+                notesFloatTwo 9s ease-in-out infinite;
+
+        }
+
+
+        .notes-bg-dot.three {
+
+            width: 13px;
+            height: 13px;
+
+            background: #b58cff;
+
+            bottom: 20%;
+
+            left: 22%;
+
+            animation:
+                notesFloatThree 8s ease-in-out infinite;
+
+        }
+
+
+        .notes-bg-dot.four {
+
+            width: 7px;
+            height: 7px;
+
+            background: #ffb4d9;
+
+            bottom: 15%;
+
+            right: 22%;
+
+            animation:
+                notesFloatFour 6s ease-in-out infinite;
+
+        }
+
+
+        @keyframes notesFloatOne {
+
+            0%,100% {
+                transform: translate(0,0);
+                opacity: .35;
+            }
+
+            50% {
+                transform: translate(20px,-30px);
+                opacity: 1;
+            }
+
+        }
+
+
+        @keyframes notesFloatTwo {
+
+            0%,100% {
+                transform: translate(0,0);
+                opacity: .4;
+            }
+
+            50% {
+                transform: translate(-25px,25px);
+                opacity: 1;
+            }
+
+        }
+
+
+        @keyframes notesFloatThree {
+
+            0%,100% {
+                transform: translate(0,0);
+            }
+
+            50% {
+                transform: translate(18px,-25px);
+            }
+
+        }
+
+
+        @keyframes notesFloatFour {
+
+            0%,100% {
+                transform: translate(0,0);
+            }
+
+            50% {
+                transform: translate(-20px,-20px);
+            }
+
+        }
+
+
+
+        /* =========================================================
+           FLOATING BOOKS / SPARKLE
+        ========================================================= */
+
+        .notes-decoration {
+
+            position: fixed;
+
+            z-index: 1;
+
+            pointer-events: none;
+
+            user-select: none;
+
+        }
+
+
+        .notes-book-decoration {
+
+            top: 90px;
+
+            right: 11%;
+
+            font-size: 48px;
+
+            animation:
+                notesBookFloat 5s ease-in-out infinite;
+
+            transform: rotate(7deg);
+
+        }
+
+
+        .notes-sparkle-decoration {
+
+            top: 220px;
+
+            left: 23%;
+
+            font-size: 25px;
+
+            animation:
+                notesSparkle 2.8s ease-in-out infinite;
+
+        }
+
+
+        .notes-small-sparkle {
+
+            position: fixed;
+
+            bottom: 18%;
+
+            right: 16%;
+
+            font-size: 24px;
+
+            z-index: 1;
+
+            pointer-events: none;
+
+            animation:
+                notesSparkle 3.5s ease-in-out infinite;
+
+        }
+
+
+        @keyframes notesBookFloat {
+
+            0%,100% {
+                transform:
+                    translateY(0)
+                    rotate(7deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-15px)
+                    rotate(-3deg);
+            }
+
+        }
+
+
+        @keyframes notesSparkle {
+
+            0%,100% {
+                opacity: .35;
+                transform: scale(.8) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.15) rotate(15deg);
+            }
+
+        }
+
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .notes-hero {
+
+            text-align: center;
+
+            margin-bottom: 38px;
+
+            animation:
+                notesHeroIn .7s ease both;
+
+        }
+
+
+        @keyframes notesHeroIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(20px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .notes-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px 24px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(247,241,255,.95),
+                    rgba(255,248,253,.95)
+                );
+
+            border:
+                1px solid
+                rgba(128,72,238,.18);
+
+            color: #7541df;
+
+            font-size: 13px;
+
+            font-weight: 850;
+
+            letter-spacing: 1.5px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(114,67,205,.08);
+
+            animation:
+                badgePulse 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes badgePulse {
+
+            0%,100% {
+                box-shadow:
+                    0 8px 25px
+                    rgba(114,67,205,.08);
+            }
+
+            50% {
+                box-shadow:
+                    0 10px 35px
+                    rgba(132,72,235,.17);
+            }
+
+        }
+
+
+        .notes-hero h1 {
+
+            margin: 20px 0 0;
+
+            color: #101a3b;
+
+            font-size:
+                clamp(50px, 6vw, 76px);
+
+            font-weight: 900;
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+
+        }
+
+
+        .notes-hero h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #7140e8,
+                    #b338df
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+
+        }
+
+
+        .notes-hero p {
+
+            max-width: 700px;
+
+            margin: 20px auto 0;
+
+            color: #7b86a6;
+
+            font-size: 17px;
+
+            line-height: 1.65;
+
+        }
+
+
+
+        /* =========================================================
+           UPLOAD CARD
+        ========================================================= */
+
+        .notes-upload-card {
+
+            position: relative;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 32px;
+
+            background:
+                rgba(255,255,255,.96);
+
+            border:
+                1px solid
+                rgba(124,72,230,.12);
+
+            border-radius: 30px;
+
+            box-shadow:
+                0 25px 65px
+                rgba(63,48,130,.10);
+
+            overflow: hidden;
+
+            animation:
+                cardAppear .8s ease .15s both;
+
+        }
+
+
+        .notes-upload-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(150,104,255,.10),
+                    transparent 70%
+                );
+
+            top: -100px;
+
+            right: -80px;
+
+            pointer-events: none;
+
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           CARD HEADER
+        ========================================================= */
+
+        .notes-card-heading {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 17px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .notes-heading-icon {
+
+            width: 59px;
+
+            height: 59px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee5ff,
+                    #f9f4ff
+                );
+
+            font-size: 28px;
+
+            animation:
+                iconBounce 4s ease-in-out infinite;
+
+        }
+
+
+        @keyframes iconBounce {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+        }
+
+
+        .notes-card-heading h2 {
+
+            margin: 0 0 5px;
+
+            color: #15203e;
+
+            font-size: 25px;
+
+            font-weight: 850;
+
+        }
+
+
+        .notes-card-heading p {
+
+            margin: 0;
+
+            color: #8b95b0;
+
+            font-size: 14px;
+
+        }
+
+
+
+        /* =========================================================
+           DROP ZONE
+        ========================================================= */
+
+        .notes-drop-zone {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            min-height: 300px;
+
+            box-sizing: border-box;
+
+            border:
+                2px dashed
+                #cfc0ff;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbf9ff,
+                    #ffffff
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            overflow: hidden;
+
+            transition:
+                border-color .25s ease,
+                transform .25s ease,
+                background .25s ease,
+                box-shadow .25s ease;
+
+        }
+
+
+        .notes-drop-zone:hover {
+
+            border-color: #9b70ee;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f3ff,
+                    #ffffff
+                );
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 15px 40px
+                rgba(112,67,220,.08);
+
+        }
+
+
+        .notes-drop-zone.dragging {
+
+            border-color: #7540df;
+
+            background: #f5efff;
+
+            transform: scale(1.01);
+
+            box-shadow:
+                0 15px 45px
+                rgba(112,67,220,.15);
+
+        }
+
+
+        /* =========================================================
+           ORBIT ANIMATION
+        ========================================================= */
+
+        .notes-upload-orbit {
+
+            position: absolute;
+
+            width: 190px;
+
+            height: 190px;
+
+            border:
+                1px solid
+                rgba(133,87,235,.08);
+
+            border-radius: 50%;
+
+            animation:
+                orbitRotate 12s linear infinite;
+
+        }
+
+
+        .notes-upload-orbit::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #9b69ef;
+
+            top: 8px;
+
+            left: 50%;
+
+            box-shadow:
+                0 0 12px
+                rgba(130,72,235,.4);
+
+        }
+
+
+        .notes-upload-orbit::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #e29bd4;
+
+            bottom: 25px;
+
+            right: 15px;
+
+        }
+
+
+        @keyframes orbitRotate {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+
+        /* =========================================================
+           UPLOAD CONTENT
+        ========================================================= */
+
+        .notes-upload-content {
+
+            position: relative;
+
+            z-index: 4;
+
+            padding: 30px 20px;
+
+        }
+
+
+        .notes-upload-icon {
+
+            width: 78px;
+
+            height: 78px;
+
+            margin:
+                0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ede4ff,
+                    #f8f2ff
+                );
+
+            font-size: 38px;
+
+            box-shadow:
+                0 12px 35px
+                rgba(113,67,216,.10);
+
+            animation:
+                uploadIconFloat 3.5s ease-in-out infinite;
+
+        }
+
+
+        @keyframes uploadIconFloat {
+
+            0%,100% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-7px)
+                    rotate(2deg);
+            }
+
+        }
+
+
+        .notes-upload-content h3 {
+
+            margin: 0 0 8px;
+
+            color: #17213e;
+
+            font-size: 25px;
+
+            font-weight: 850;
+
+        }
+
+
+        .notes-upload-content p {
+
+            margin: 0;
+
+            color: #8b95ae;
+
+            font-size: 15px;
+
+        }
+
+
+        .notes-upload-content strong {
+
+            color: #8146e4;
+
+        }
+
+
+        .notes-file-types {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 21px;
+
+        }
+
+
+        .notes-file-types span {
+
+            padding: 8px 14px;
+
+            border-radius: 12px;
+
+            background: #f4efff;
+
+            color: #76688d;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+        }
+
+
+        .notes-file-types b {
+
+            color: #c9bfdc;
+
+        }
+
+
+
+        /* =========================================================
+           SELECTED FILE
+        ========================================================= */
+
+        .notes-selected-file {
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            position: relative;
+
+            z-index: 3;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            margin-top: 17px;
+
+            padding: 15px 17px;
+
+            border-radius: 17px;
+
+            background: #f8f5ff;
+
+            border:
+                1px solid
+                #e5ddfb;
+
+            animation:
+                fileAppear .35s ease both;
+
+        }
+
+
+        @keyframes fileAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(8px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .notes-file-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            min-width: 0;
+
+        }
+
+
+        .notes-file-icon {
+
+            width: 46px;
+
+            height: 46px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: #ebe3ff;
+
+            font-size: 22px;
+
+        }
+
+
+        .notes-file-name {
+
+            color: #202a47;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .notes-file-subtitle {
+
+            margin-top: 3px;
+
+            color: #969eb4;
+
+            font-size: 12px;
+
+        }
+
+
+        .notes-file-check {
+
+            width: 32px;
+
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #e9f9ef;
+
+            color: #2da35c;
+
+            font-weight: 900;
+
+        }
+
+
+
+        /* =========================================================
+           UPLOAD BUTTON
+        ========================================================= */
+
+        .notes-upload-button {
+
+            position: relative;
+
+            z-index: 3;
+
+            width: 100%;
+
+            margin-top: 19px;
+
+            padding: 17px 22px;
+
+            border: none;
+
+            border-radius: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7540e7,
+                    #a13de3
+                );
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            font-weight: 850;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 30px
+                rgba(116,62,224,.22);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+
+        }
+
+
+        .notes-upload-button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 17px 38px
+                rgba(116,62,224,.28);
+
+        }
+
+
+        .notes-upload-button:active {
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .notes-upload-button:disabled {
+
+            opacity: .65;
+
+            cursor: wait;
+
+            transform: none;
+
+        }
+
+
+        .notes-button-arrow {
+
+            font-size: 20px;
+
+        }
+
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .notes-status {
+
+            min-height: 22px;
+
+            margin-top: 13px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+        }
+
+
+        .notes-status.success {
+
+            color: #299558;
+
+        }
+
+
+        .notes-status.error {
+
+            color: #d64d5e;
+
+        }
+
+
+        .notes-status.loading {
+
+            color: #7950d8;
+
+        }
+
+
+
+        /* =========================================================
+           ASK CARD
+        ========================================================= */
+
+        .notes-ask-card {
+
+            display: none;
+
+            position: relative;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            margin-top: 30px;
+
+            padding: 32px;
+
+            background:
+                rgba(255,255,255,.96);
+
+            border:
+                1px solid
+                rgba(124,72,230,.12);
+
+            border-radius: 30px;
+
+            box-shadow:
+                0 25px 65px
+                rgba(63,48,130,.10);
+
+            animation:
+                askCardAppear .6s ease both;
+
+        }
+
+
+        @keyframes askCardAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .notes-ask-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .notes-ai-avatar {
+
+            width: 58px;
+
+            height: 58px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee4ff,
+                    #f8f1ff
+                );
+
+            font-size: 28px;
+
+            animation:
+                aiFloat 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes aiFloat {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+        }
+
+
+        .notes-section-label {
+
+            color: #8050dc;
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .notes-ask-heading h2 {
+
+            margin: 3px 0 4px;
+
+            color: #17213e;
+
+            font-size: 25px;
+
+        }
+
+
+        .notes-ask-heading p {
+
+            margin: 0;
+
+            color: #8993ae;
+
+            font-size: 14px;
+
+        }
+
+
+
+        /* =========================================================
+           QUESTION
+        ========================================================= */
+
+        .notes-question-wrapper {
+
+            position: relative;
+
+        }
+
+
+        .notes-question-input {
+
+            width: 100%;
+
+            min-height: 140px;
+
+            box-sizing: border-box;
+
+            resize: vertical;
+
+            outline: none;
+
+            padding: 18px;
+
+            padding-bottom: 67px;
+
+            border:
+                1px solid
+                #e1d9f3;
+
+            border-radius: 18px;
+
+            background: #fcfbff;
+
+            color: #202945;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease;
+
+        }
+
+
+        .notes-question-input:focus {
+
+            border-color: #9870e8;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(130,75,255,.08);
+
+        }
+
+
+        .notes-question-input::placeholder {
+
+            color: #a3aabe;
+
+        }
+
+
+        .notes-ask-button {
+
+            position: absolute;
+
+            right: 12px;
+
+            bottom: 12px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            padding: 12px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7844e2,
+                    #963ddd
+                );
+
+            color: white;
+
+            font-family: inherit;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+
+        }
+
+
+        .notes-ask-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(120,68,226,.2);
+
+        }
+
+
+        .notes-ask-button:disabled {
+
+            opacity: .6;
+
+            cursor: wait;
+
+        }
+
+
+
+        /* =========================================================
+           ANSWER
+        ========================================================= */
+
+        .notes-answer-card {
+
+            display: none;
+
+            margin-top: 23px;
+
+            padding: 23px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbf9ff,
+                    #ffffff
+                );
+
+            border:
+                1px solid
+                #e6def8;
+
+            animation:
+                answerAppear .45s ease both;
+
+        }
+
+
+        @keyframes answerAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(12px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .notes-answer-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 17px;
+
+        }
+
+
+        .notes-answer-avatar {
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #eee5ff;
+
+            font-size: 21px;
+
+        }
+
+
+        .notes-answer-top h3 {
+
+            margin: 3px 0 0;
+
+            color: #1c2745;
+
+            font-size: 18px;
+
+        }
+
+
+        .notes-answer-text {
+
+            color: #414b66;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+
+        }
+
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .notes-page {
+
+                padding:
+                    35px 20px 70px;
+
+            }
+
+
+            .notes-book-decoration {
+
+                right: 4%;
+
+                font-size: 35px;
+
+            }
+
+
+            .notes-sparkle-decoration {
+
+                left: 8%;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .notes-page {
+
+                padding:
+                    25px 14px 55px;
+
+            }
+
+
+            .notes-hero h1 {
+
+                font-size: 43px;
+
+                letter-spacing: -1px;
+
+            }
+
+
+            .notes-hero p {
+
+                font-size: 15px;
+
+            }
+
+
+            .notes-upload-card,
+            .notes-ask-card {
+
+                padding: 21px;
+
+                border-radius: 23px;
+
+            }
+
+
+            .notes-card-heading {
+
+                align-items: flex-start;
+
+            }
+
+
+            .notes-card-heading h2 {
+
+                font-size: 21px;
+
+            }
+
+
+            .notes-drop-zone {
+
+                min-height: 245px;
+
+            }
+
+
+            .notes-upload-content h3 {
+
+                font-size: 21px;
+
+            }
+
+
+            .notes-upload-orbit {
+
+                width: 155px;
+
+                height: 155px;
+
+            }
+
+
+            .notes-ask-heading {
+
+                align-items: flex-start;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="app-layout">
+
+
+ <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+           LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item">
+
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item">
+
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item active">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}" class="side-item">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+           class="side-item">
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-area">
+
+
+        <div class="notes-page">
+
+
+            <!-- ANIMATED DECORATIONS -->
+
+            <div class="notes-bg-dot one"></div>
+            <div class="notes-bg-dot two"></div>
+            <div class="notes-bg-dot three"></div>
+            <div class="notes-bg-dot four"></div>
+
+
+            <div class="notes-decoration notes-book-decoration">
+                📚
+            </div>
+
+
+            <div class="notes-decoration notes-sparkle-decoration">
+                ✨
+            </div>
+
+
+            <div class="notes-small-sparkle">
+                ✨
+            </div>
+
+
+
+            <div class="notes-container">
+
+
+                <!-- =================================================
+                     HERO
+                ================================================== -->
+
+                <section class="notes-hero">
+
+
+                    <div class="notes-badge">
+
+                        📖
+
+                        AI POWERED STUDY NOTES
+
+                    </div>
+
+
+                    <h1>
+
+                        My Notes
+                        <span>AI</span>
+
+                    </h1>
+
+
+                    <p>
+
+                        Upload your study notes and ask StudyAI
+                        questions directly from your material.
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     UPLOAD CARD
+                ================================================== -->
+
+                <section class="notes-upload-card">
+
+
+                    <div class="notes-card-heading">
+
+
+                        <div class="notes-heading-icon">
+                            📚
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Upload Your Notes
+                            </h2>
+
+
+                            <p>
+
+                                Give StudyAI your notes so it can
+                                answer questions from them.
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- DROP ZONE -->
+
+                    <label
+                        for="notesFile"
+                        id="notesDropZone"
+                        class="notes-drop-zone">
+
+
+                        <div class="notes-upload-orbit"></div>
+
+
+                        <div class="notes-upload-content">
+
+
+                            <div class="notes-upload-icon">
+                                📄
+                            </div>
+
+
+                            <h3>
+                                Drop your notes here
+                            </h3>
+
+
+                            <p>
+
+                                or
+
+                                <strong>
+                                    click to browse
+                                </strong>
+
+                            </p>
+
+
+                            <div class="notes-file-types">
+
+                                <span>
+                                    📕 PDF
+                                </span>
+
+                                <b>
+                                    •
+                                </b>
+
+                                <span>
+                                    📘 DOCX
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </label>
+
+
+
+                    <input
+                        type="file"
+                        id="notesFile"
+                        accept=".pdf,.docx"
+                        hidden>
+
+
+
+                    <!-- SELECTED FILE -->
+
+                    <div
+                        id="uploadedFile"
+                        class="notes-selected-file">
+
+
+                        <div class="notes-file-left">
+
+
+                            <div class="notes-file-icon">
+                                📄
+                            </div>
+
+
+                            <div>
+
+
+                                <div
+                                    id="fileName"
+                                    class="notes-file-name">
+                                </div>
+
+
+                                <div class="notes-file-subtitle">
+
+                                    Notes selected and ready to upload
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="notes-file-check">
+                            ✓
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- UPLOAD BUTTON -->
+
+                    <button
+                        id="uploadButton"
+                        class="notes-upload-button"
+                        type="button">
+
+
+                        <span>
+                            📤
+                        </span>
+
+
+                        <span>
+                            Upload Notes
+                        </span>
+
+
+                        <span class="notes-button-arrow">
+                            →
+                        </span>
+
+
+                    </button>
+
+
+
+                    <div
+                        id="uploadStatus"
+                        class="notes-status">
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     ASK STUDYAI
+                ================================================== -->
+
+                <section
+                    id="askSection"
+                    class="notes-ask-card">
+
+
+                    <div class="notes-ask-heading">
+
+
+                        <div class="notes-ai-avatar">
+                            🤖
+                        </div>
+
+
+                        <div>
+
+
+                            <div class="notes-section-label">
+                                YOUR AI STUDY ASSISTANT
+                            </div>
+
+
+                            <h2>
+                                Ask StudyAI
+                            </h2>
+
+
+                            <p>
+                                Ask anything about your uploaded notes.
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="notes-question-wrapper">
+
+
+                        <textarea
+                            id="questionInput"
+                            class="notes-question-input"
+                            placeholder="Ask a question about your notes..."
+                            rows="4"></textarea>
+
+
+                        <button
+                            id="askButton"
+                            class="notes-ask-button"
+                            type="button">
+
+
+                            <span>
+                                🤖
+                            </span>
+
+
+                            Ask StudyAI
+
+
+                            <span>
+                                →
+                            </span>
+
+
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- ANSWER -->
+
+                    <div
+                        id="answerCard"
+                        class="notes-answer-card">
+
+
+                        <div class="notes-answer-top">
+
+
+                            <div class="notes-answer-avatar">
+                                ✨
+                            </div>
+
+
+                            <div>
+
+
+                                <div class="notes-section-label">
+                                    STUDYAI ANSWER
+                                </div>
+
+
+                                <h3>
+                                    Here's what I found
+                                </h3>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div
+                            id="answerText"
+                            class="notes-answer-text">
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const notesFile =
+    document.getElementById("notesFile");
+
+const notesDropZone =
+    document.getElementById("notesDropZone");
+
+const uploadButton =
+    document.getElementById("uploadButton");
+
+const uploadedFile =
+    document.getElementById("uploadedFile");
+
+const fileName =
+    document.getElementById("fileName");
+
+const uploadStatus =
+    document.getElementById("uploadStatus");
+
+const askSection =
+    document.getElementById("askSection");
+
+const questionInput =
+    document.getElementById("questionInput");
+
+const askButton =
+    document.getElementById("askButton");
+
+const answerCard =
+    document.getElementById("answerCard");
+
+const answerText =
+    document.getElementById("answerText");
+
+
+
+/* =========================================================
+   FILE SELECTED
+========================================================= */
+
+notesFile.addEventListener(
+    "change",
+    function () {
+
+
+        if (!notesFile.files.length) {
+            return;
+        }
+
+
+        const file =
+            notesFile.files[0];
+
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        if (
+            extension !== "pdf" &&
+            extension !== "docx"
+        ) {
+
+            notesFile.value = "";
+
+            uploadStatus.textContent =
+                "⚠ Please select a PDF or DOCX file.";
+
+            uploadStatus.className =
+                "notes-status error";
+
+            return;
+
+        }
+
+
+        fileName.textContent =
+            file.name;
+
+
+        uploadedFile.style.display =
+            "flex";
+
+
+        uploadStatus.textContent =
+            "📄 File selected. Click Upload Notes.";
+
+
+        uploadStatus.className =
+            "notes-status success";
+
+
+    }
+);
+
+
+
+/* =========================================================
+   DRAG AND DROP
+========================================================= */
+
+notesDropZone.addEventListener(
+    "dragover",
+    function (event) {
+
+        event.preventDefault();
+
+        notesDropZone.classList.add(
+            "dragging"
+        );
+
+    }
+);
+
+
+notesDropZone.addEventListener(
+    "dragleave",
+    function () {
+
+        notesDropZone.classList.remove(
+            "dragging"
+        );
+
+    }
+);
+
+
+notesDropZone.addEventListener(
+    "drop",
+    function (event) {
+
+        event.preventDefault();
+
+        notesDropZone.classList.remove(
+            "dragging"
+        );
+
+
+        const droppedFiles =
+            event.dataTransfer.files;
+
+
+        if (!droppedFiles.length) {
+            return;
+        }
+
+
+        const file =
+            droppedFiles[0];
+
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        if (
+            extension !== "pdf" &&
+            extension !== "docx"
+        ) {
+
+            uploadStatus.textContent =
+                "⚠ Please select a PDF or DOCX file.";
+
+            uploadStatus.className =
+                "notes-status error";
+
+            return;
+
+        }
+
+
+        try {
+
+            const transfer =
+                new DataTransfer();
+
+            transfer.items.add(file);
+
+            notesFile.files =
+                transfer.files;
+
+        }
+        catch (error) {
+
+            console.error(
+                "DROP FILE ERROR:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        fileName.textContent =
+            file.name;
+
+
+        uploadedFile.style.display =
+            "flex";
+
+
+        uploadStatus.textContent =
+            "📄 File selected. Click Upload Notes.";
+
+
+        uploadStatus.className =
+            "notes-status success";
+
+
+    }
+);
+
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+uploadButton.addEventListener(
+    "click",
+    uploadNotes
+);
+
+
+
+async function uploadNotes() {
+
+
+    if (!notesFile.files.length) {
+
+        uploadStatus.textContent =
+            "⚠ Please select a PDF or DOCX file first.";
+
+        uploadStatus.className =
+            "notes-status error";
+
+        return;
+
+    }
+
+
+    const file =
+        notesFile.files[0];
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file
+    );
+
+
+    uploadButton.disabled =
+        true;
+
+
+    uploadButton.innerHTML =
+        `
+        <span>⏳</span>
+        <span>Reading Notes...</span>
+        `;
+
+
+    uploadStatus.textContent =
+        "StudyAI is reading your notes...";
+
+
+    uploadStatus.className =
+        "notes-status loading";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/api/upload-notes",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                await response.json();
+
+        }
+        catch {
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            data.error
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Upload failed."
+            );
+
+        }
+
+
+        uploadStatus.textContent =
+            "✓ " +
+            (
+                data.message ||
+                "Notes uploaded successfully!"
+            );
+
+
+        uploadStatus.className =
+            "notes-status success";
+
+
+        askSection.style.display =
+            "block";
+
+
+        setTimeout(
+            function () {
+
+                askSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            },
+            350
+        );
+
+
+    }
+    catch (error) {
+
+
+        console.error(
+            "NOTES UPLOAD ERROR:",
+            error
+        );
+
+
+        uploadStatus.textContent =
+            "❌ " +
+            error.message;
+
+
+        uploadStatus.className =
+            "notes-status error";
+
+
+    }
+    finally {
+
+
+        uploadButton.disabled =
+            false;
+
+
+        uploadButton.innerHTML =
+            `
+            <span>📤</span>
+            <span>Upload Notes</span>
+            <span class="notes-button-arrow">→</span>
+            `;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   ASK STUDYAI
+========================================================= */
+
+askButton.addEventListener(
+    "click",
+    askQuestion
+);
+
+
+
+/* =========================================================
+   CTRL + ENTER
+========================================================= */
+
+questionInput.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            askQuestion();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   ASK QUESTION
+========================================================= */
+
+async function askQuestion() {
+
+
+    const question =
+        questionInput.value.trim();
+
+
+    if (!question) {
+
+        questionInput.focus();
+
+        return;
+
+    }
+
+
+    askButton.disabled =
+        true;
+
+
+    askButton.innerHTML =
+        `
+        <span>⏳</span>
+        Thinking...
+        `;
+
+
+    answerCard.style.display =
+        "none";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/api/ask-notes",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            question: question
+                        })
+
+                }
+            );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                await response.json();
+
+        }
+        catch {
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            data.error
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Unable to get an answer."
+            );
+
+        }
+
+
+        answerText.textContent =
+            data.answer ||
+            "No answer was returned.";
+
+
+        answerCard.style.display =
+            "block";
+
+
+        setTimeout(
+            function () {
+
+                answerCard.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            },
+            150
+        );
+
+
+    }
+    catch (error) {
+
+
+        console.error(
+            "ASK NOTES ERROR:",
+            error
+        );
+
+
+        answerCard.style.display =
+            "block";
+
+
+        answerText.textContent =
+            "❌ " +
+            error.message;
+
+    }
+    finally {
+
+
+        askButton.disabled =
+            false;
+
+
+        askButton.innerHTML =
+            `
+            <span>🤖</span>
+            Ask StudyAI
+            <span>→</span>
+            `;
+
+    }
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

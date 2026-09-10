@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LearnMate | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="study-home">
+
+<div class="study-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="study-sidebar">
+
+        <div class="study-logo">
+            <div class="study-logo-icon">🎓</div>
+            <span>LearnMate<span></span></span>
+        </div>
+
+        <nav class="study-nav">
+
+            <a href="{{ url_for('home') }}"
+               class="study-nav-link active">
+                <span>🏠</span>
+                <b>Dashboard</b>
+            </a>
+
+            <a href="{{ url_for('quiz') }}"
+               class="study-nav-link">
+                <span>📝</span>
+                AI Quiz
+            </a>
+
+            <a href="{{ url_for('flashcards') }}"
+               class="study-nav-link">
+                <span>🃏</span>
+                Flashcards
+            </a>
+
+            <a href="{{ url_for('explain') }}"
+               class="study-nav-link">
+                <span>🧠</span>
+                Explain Topic
+            </a>
+
+            <a href="{{ url_for('notes') }}"
+               class="study-nav-link">
+                <span>📚</span>
+                My Notes
+            </a>
+
+            <a href="{{ url_for('predictor') }}"
+               class="study-nav-link">
+                <span>🎯</span>
+                Exam Predictor
+            </a>
+            
+            <a href="{{ url_for('planner') }}"
+   class="study-nav-link">
+    <span>📅</span>
+    AI Study Planner
+</a>
+        </nav>
+
+
+        <!-- AI CARD -->
+
+        <div class="sidebar-ai">
+
+            <div class="sidebar-robot">
+                🤖
+            </div>
+
+            <h3>LearnMate is ready!</h3>
+
+            <p>
+                Let's make studying
+                smarter today.
+            </p>
+
+            <a href="{{ url_for('explain') }}">
+                Let's Go ✨
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="study-main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="study-topbar">
+
+            <div>
+                <p class="top-label">
+                    YOUR AI STUDY SPACE
+                </p>
+
+                <h2>
+                    Welcome back! 👋
+                </h2>
+            </div>
+
+            <div class="top-right">
+
+                <div class="ai-powered">
+                    ✨ Powered by AI
+                </div>
+
+                <div class="profile-circle">
+                    👤
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="dashboard-hero">
+
+            <div class="hero-copy">
+
+                <p class="hero-welcome">
+                    Welcome back! 👋
+                </p>
+
+                <h1>
+                    Learn
+                    <span>smarter,</span>
+                    <br>
+                    achieve
+                    <span>bigger.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Your AI study companion that helps you
+                    understand, practice and prepare better.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="{{ url_for('quiz') }}"
+                       class="primary-action">
+                        🚀 Start Learning
+                        <span>→</span>
+                    </a>
+
+                    <a href="#study-tools"
+                       class="secondary-action">
+                        Explore Tools
+                        <span>✦</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO ILLUSTRATION -->
+
+            <div class="hero-art">
+
+                <div class="art-glow"></div>
+
+                <div class="art-orbit orbit-a"></div>
+                <div class="art-orbit orbit-b"></div>
+
+                <div class="art-book">
+                    📖
+                </div>
+
+                <div class="art-lightbulb">
+                    💡
+                </div>
+
+                <div class="art-brain">
+                    🧠
+                </div>
+
+                <div class="art-target">
+                    🎯
+                </div>
+
+                <div class="art-chat">
+                    💬
+                </div>
+
+                <div class="art-note">
+                    📄
+                </div>
+
+                <div class="art-spark spark-1">✦</div>
+                <div class="art-spark spark-2">✧</div>
+                <div class="art-spark spark-3">✦</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATS ================= -->
+
+        <section class="dashboard-stats">
+
+            <div class="dashboard-stat">
+
+                <div class="stat-circle purple">
+                    🎓
+                </div>
+
+                <div>
+                    <small>Topics Explored</small>
+                    <strong id="topicsExplored">0</strong>
+                    <em>+12 this week</em>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="stat-circle yellow">
+                    🏆
+                </div>
+
+                <div>
+                    <small>Quizzes Completed</small>
+                    <strong id="quizzesCompleted">0</strong>
+                    <em>+8 this week</em>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="stat-circle green">
+                    🎯
+                </div>
+
+                <div>
+                    <small>Accuracy</small>
+                    <strong id="accuracy">0%</strong>
+                    <em>Excellent!</em>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="stat-circle orange">
+                    🔥
+                </div>
+
+                <div>
+                    <small>Study Streak</small>
+                    <strong id="studyStreak">0</strong>
+                    <em>Keep it up! 🔥</em>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STUDY TOOLS ================= -->
+
+        <section
+            id="study-tools"
+            class="tools-section">
+
+            <div class="tools-heading">
+
+                <div>
+
+                    <p>EXPLORE</p>
+
+                    <h2>
+                        ✨ Your Study Tools
+                    </h2>
+
+                </div>
+
+                <span>
+                    All your AI tools →
+                </span>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+
+                <!-- QUIZ -->
+
+                <a href="{{ url_for('quiz') }}"
+                   class="tool-card quiz-card">
+
+                    <div class="tool-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        AI Quiz
+                    </h3>
+
+                    <p>
+                        Test your knowledge
+                        with AI-generated
+                        questions.
+                    </p>
+
+                    <strong>
+                        Start Quiz →
+                    </strong>
+
+                    <div class="tool-spark">
+                        ✦
+                    </div>
+
+                </a>
+
+
+                <!-- FLASHCARDS -->
+
+                <a href="{{ url_for('flashcards') }}"
+                   class="tool-card flashcard-card">
+
+                    <div class="tool-icon">
+                        🃏
+                    </div>
+
+                    <h3>
+                        Flashcards
+                    </h3>
+
+                    <p>
+                        Remember important
+                        concepts faster with
+                        smart cards.
+                    </p>
+
+                    <strong>
+                        Practice →
+                    </strong>
+
+                    <div class="tool-spark">
+                        ✦
+                    </div>
+
+                </a>
+
+
+                <!-- EXPLAIN -->
+
+                <a href="{{ url_for('explain') }}"
+                   class="tool-card explain-card">
+
+                    <div class="tool-icon">
+                        🧠
+                    </div>
+
+                    <h3>
+                        Explain Topic
+                    </h3>
+
+                    <p>
+                        Turn difficult topics
+                        into simple explanations.
+                    </p>
+
+                    <strong>
+                        Understand →
+                    </strong>
+
+                    <div class="tool-spark">
+                        ✦
+                    </div>
+
+                </a>
+
+
+                <!-- NOTES -->
+
+                <a href="{{ url_for('notes') }}"
+                   class="tool-card notes-card">
+
+                    <div class="tool-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        My Notes
+                    </h3>
+
+                    <p>
+                        Upload your notes and
+                        ask questions using AI.
+                    </p>
+
+                    <strong>
+                        Open Notes →
+                    </strong>
+
+                    <div class="tool-spark">
+                        ✦
+                    </div>
+
+                </a>
+
+
+                <!-- PREDICTOR -->
+
+                <a href="{{ url_for('predictor') }}"
+                   class="tool-card predictor-card">
+
+                    <div class="tool-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Exam Predictor
+                    </h3>
+
+                    <p>
+                        Discover important
+                        topics from previous
+                        exam papers.
+                    </p>
+
+                    <strong>
+                        Predict Topics →
+                    </strong>
+
+                    <div class="tool-spark">
+                        ✦
+                    </div>
+
+                </a>
+
+
+                <!-- STUDY PLANNER -->
+
+<a href="{{ url_for('planner') }}"
+   class="tool-card planner-card">
+
+    <div class="tool-icon">
+        📅
+    </div>
+
+    <h3>
+        Study Planner
+    </h3>
+
+    <p>
+        Create a personalized
+        study plan for your exam.
+    </p>
+
+    <strong>
+        Plan My Study →
+    </strong>
+
+    <div class="tool-spark">
+        ✦
+    </div>
+
+</a>
+
+        </section>
+
+
+        <!-- ================= AI BANNER ================= -->
+
+        <section class="study-banner">
+
+            <div class="banner-robot">
+                🤖
+            </div>
+
+            <div class="banner-content">
+
+                <p>
+                    YOUR PERSONAL AI STUDY PARTNER
+                </p>
+
+                <h2>
+                    Don't just study harder.
+                    <span>Study smarter.</span>
+                </h2>
+
+                <small>
+                    From confusing concepts to exam preparation,
+                    LearnMate has got your back.
+                </small>
+
+            </div>
+
+            <a href="{{ url_for('explain') }}"
+               class="banner-button">
+                Talk to LearnMate →
+            </a>
+
+        </section>
+
+
+        <footer class="study-footer">
+
+            <span>
+                Made for smarter studying ✨
+            </span>
+
+            <span>
+                LearnMate
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+
+async function loadStudyStats() {
+
+    try {
+
+        const response =
+            await fetch("/api/stats");
+
+        const data =
+            await response.json();
+
+        if (data.error) {
+            console.error(data.error);
+            return;
+        }
+
+        document.getElementById(
+            "topicsExplored"
+        ).textContent =
+            data.topics_explored;
+
+
+        document.getElementById(
+            "quizzesCompleted"
+        ).textContent =
+            data.quizzes_completed;
+
+
+        document.getElementById(
+            "accuracy"
+        ).textContent =
+            data.accuracy + "%";
+
+
+        document.getElementById(
+            "studyStreak"
+        ).textContent =
+            data.study_streak;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load study statistics:",
+            error
+        );
+
+    }
+
+}
+
+
+loadStudyStats();
+
+</script>
+</body>
+
+</html>

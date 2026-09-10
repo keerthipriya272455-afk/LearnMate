@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body class="quiz-body">
+
+
+<div class="app-layout">
+
+
+ <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+           LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item active">
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item">
+
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}" class="side-item">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+           class="side-item">
+
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+    <!-- =================================
+         MAIN AREA
+    ================================== -->
+
+    <main class="main-area quiz-main">
+
+
+        <!-- Background decorations -->
+
+        <div class="quiz-orb quiz-orb-1"></div>
+        <div class="quiz-orb quiz-orb-2"></div>
+        <div class="quiz-orb quiz-orb-3"></div>
+
+        <div class="quiz-dot quiz-dot-1"></div>
+        <div class="quiz-dot quiz-dot-2"></div>
+        <div class="quiz-dot quiz-dot-3"></div>
+
+
+        <!-- Decorative emojis -->
+
+        <div class="quiz-decoration quiz-decoration-one">
+            ❓
+        </div>
+
+        <div class="quiz-decoration quiz-decoration-two">
+            ✨
+        </div>
+
+
+        <!-- =================================
+             HERO
+        ================================== -->
+
+        <section class="quiz-hero">
+
+
+            <div class="quiz-badge">
+
+                ✨
+
+                <span>
+                    AI POWERED PRACTICE
+                </span>
+
+            </div>
+
+
+            <h1>
+
+                Test Your Knowledge
+                <span>With AI Quiz</span>
+
+            </h1>
+
+
+            <p>
+
+                Generate smart multiple-choice questions
+                and test yourself on any topic.
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             QUIZ GENERATOR
+        ================================== -->
+
+        <section class="quiz-generator">
+
+
+            <div class="quiz-generator-heading">
+
+
+                <div class="quiz-generator-icon">
+                    🧠
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Create Your Quiz
+                    </h2>
+
+                    <p>
+                        Choose a topic, number of questions
+                        and difficulty level.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Controls -->
+
+            <div class="quiz-generator-controls">
+
+
+                <input
+                    type="text"
+                    id="quizTopic"
+                    placeholder="Enter a topic... e.g. Electrostatics"
+                >
+
+
+                <select id="quizNumber">
+
+                    <option value="5">
+                        5 Questions
+                    </option>
+
+                    <option value="8">
+                        8 Questions
+                    </option>
+
+                    <option value="10">
+                        10 Questions
+                    </option>
+
+                </select>
+
+
+                <select id="quizDifficulty">
+
+                    <option value="Easy">
+                        Easy
+                    </option>
+
+                    <option value="Medium" selected>
+                        Medium
+                    </option>
+
+                    <option value="Hard">
+                        Hard
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    id="quizGenerateBtn">
+
+                    <span>
+                        ✨
+                    </span>
+
+                    Generate Quiz
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- Tip -->
+
+            <div class="quiz-tip">
+
+                💡 Tip: Use a specific topic for better
+                exam-focused questions.
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             LOADING
+        ================================== -->
+
+        <section
+            id="quizLoading"
+            class="quiz-loading"
+            style="display:none;"
+        >
+
+
+            <div class="quiz-loading-card">
+
+                🧠
+
+            </div>
+
+
+            <h3>
+                Creating your quiz...
+            </h3>
+
+
+            <p>
+                StudyAI is preparing challenging
+                questions for you.
+            </p>
+
+
+            <div class="quiz-loading-dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             ERROR
+        ================================== -->
+
+        <div
+            id="quizError"
+            class="quiz-error"
+            style="display:none;"
+        ></div>
+
+
+
+        <!-- =================================
+             QUIZ AREA
+        ================================== -->
+
+        <section
+            id="quizArea"
+            class="quiz-area"
+            style="display:none;"
+        >
+
+
+            <!-- TOP BAR -->
+
+            <div class="quiz-topbar">
+
+
+                <div>
+
+                    <span>
+                        YOUR QUIZ
+                    </span>
+
+
+                    <h2 id="quizTopicTitle">
+                        Let's test your knowledge
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="quizCounter"
+                    class="quiz-counter">
+
+                    1 / 5
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PROGRESS -->
+
+            <div class="quiz-progress-wrapper">
+
+                <div class="quiz-progress-track">
+
+                    <div
+                        id="quizProgress"
+                        class="quiz-progress">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUESTION CARD -->
+
+            <div
+                id="questionCard"
+                class="question-card"
+            >
+
+
+                <div class="question-card-top">
+
+                    <span id="questionNumber">
+                        QUESTION 01
+                    </span>
+
+
+                    <span class="question-star">
+                        ✦
+                    </span>
+
+                </div>
+
+
+
+                <div class="question-content">
+
+
+                    <div class="question-icon">
+                        ?
+                    </div>
+
+
+                    <h2 id="questionText"></h2>
+
+
+                </div>
+
+
+
+                <!-- OPTIONS -->
+
+                <div
+                    id="optionsContainer"
+                    class="quiz-options"
+                ></div>
+
+
+
+                <!-- FEEDBACK -->
+
+                <div
+                    id="quizFeedback"
+                    class="quiz-feedback"
+                    style="display:none;"
+                ></div>
+
+
+
+                <!-- HINT -->
+
+                <div class="question-hint">
+
+                    💡 Choose the best answer
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CONTROLS -->
+
+            <div class="quiz-controls">
+
+
+                <button
+                    type="button"
+                    id="quizPrevBtn"
+                    class="quiz-control">
+
+                    ← Previous
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="quizNextBtn"
+                    class="quiz-next">
+
+                    Next Question →
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- QUESTION DOTS -->
+
+            <div
+                id="quizDots"
+                class="quiz-dots">
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             RESULT
+        ================================== -->
+
+        <section
+            id="quizResult"
+            class="quiz-result"
+            style="display:none;"
+        >
+
+
+            <div class="result-trophy">
+                🏆
+            </div>
+
+
+            <div class="result-label">
+                QUIZ COMPLETE
+            </div>
+
+
+            <h2>
+                Great Job!
+            </h2>
+
+
+            <p id="finalScore">
+                You scored 0 / 5
+            </p>
+
+
+            <button
+                type="button"
+                id="restartQuizBtn">
+
+                🔄 Try Again
+
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const generateBtn =
+        document.getElementById("quizGenerateBtn");
+
+    const topicInput =
+        document.getElementById("quizTopic");
+
+    const numberSelect =
+        document.getElementById("quizNumber");
+
+    const difficultySelect =
+        document.getElementById("quizDifficulty");
+
+    const loading =
+        document.getElementById("quizLoading");
+
+    const quizArea =
+        document.getElementById("quizArea");
+
+    const errorBox =
+        document.getElementById("quizError");
+
+    const generator =
+        document.querySelector(".quiz-generator");
+
+    let questions = [];
+    let currentQuestion = 0;
+    let answers = [];
+
+    generateBtn.addEventListener("click", generateQuiz);
+
+
+    async function generateQuiz() {
+
+        const topic =
+            topicInput.value.trim();
+
+        const number =
+            parseInt(numberSelect.value);
+
+        const difficulty =
+            difficultySelect.value;
+
+
+        if (!topic) {
+
+            alert("Please enter a topic first!");
+
+            topicInput.focus();
+
+            return;
+        }
+
+
+        // Reset screen
+
+        errorBox.style.display = "none";
+        quizArea.style.display = "none";
+
+        loading.style.display = "block";
+
+        generateBtn.disabled = true;
+
+
+        try {
+
+            const response = await fetch(
+                "/api/generate-quiz",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        topic: topic,
+                        number: number,
+                        difficulty: difficulty
+                    })
+                }
+            );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || data.error) {
+
+                throw new Error(
+                    data.error ||
+                    "Failed to generate quiz."
+                );
+            }
+
+
+            if (
+                !data.questions ||
+                !Array.isArray(data.questions) ||
+                data.questions.length === 0
+            ) {
+
+                throw new Error(
+                    "No questions were generated."
+                );
+            }
+
+
+            questions =
+                data.questions;
+
+            currentQuestion = 0;
+
+            answers =
+                new Array(questions.length)
+                .fill(null);
+
+
+            // Hide generator
+
+            loading.style.display = "none";
+
+            generator.style.display = "none";
+
+            quizArea.style.display = "block";
+
+
+            // Set title
+
+            document.getElementById(
+                "quizTopicTitle"
+            ).textContent =
+                topic;
+
+
+            createDots();
+
+            showQuestion();
+
+
+            // Scroll to quiz
+
+            quizArea.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "QUIZ GENERATION ERROR:",
+                error
+            );
+
+
+            loading.style.display = "none";
+
+
+            errorBox.textContent =
+                "❌ " + error.message;
+
+
+            errorBox.style.display =
+                "block";
+
+        }
+
+        finally {
+
+            generateBtn.disabled =
+                false;
+
+        }
+
+    }
+
+
+    function showQuestion() {
+
+        const question =
+            questions[currentQuestion];
+
+
+        const total =
+            questions.length;
+
+
+        // Counter
+
+        document.getElementById(
+            "quizCounter"
+        ).textContent =
+            `${currentQuestion + 1} / ${total}`;
+
+
+        // Question number
+
+        document.getElementById(
+            "questionNumber"
+        ).textContent =
+            `QUESTION ${String(
+                currentQuestion + 1
+            ).padStart(2, "0")}`;
+
+
+        // Question text
+
+        document.getElementById(
+            "questionText"
+        ).textContent =
+            question.question;
+
+
+        // Progress
+
+        const progress =
+            ((currentQuestion + 1) / total) * 100;
+
+
+        document.getElementById(
+            "quizProgress"
+        ).style.width =
+            progress + "%";
+
+
+        // Options
+
+        const container =
+            document.getElementById(
+                "optionsContainer"
+            );
+
+
+        container.innerHTML = "";
+
+
+        Object.entries(
+            question.options
+        ).forEach(
+            ([letter, text]) => {
+
+                const button =
+                    document.createElement("button");
+
+
+                button.type =
+                    "button";
+
+
+                button.className =
+                    "quiz-option";
+
+
+                button.innerHTML = `
+                    <span class="option-letter">
+                        ${letter}
+                    </span>
+
+                    <span class="option-text">
+                        ${text}
+                    </span>
+                `;
+
+
+                if (
+                    answers[currentQuestion] ===
+                    letter
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                button.addEventListener(
+                    "click",
+                    () => selectAnswer(letter)
+                );
+
+
+                container.appendChild(
+                    button
+                );
+
+            }
+        );
+
+
+        // Feedback
+
+        const feedback =
+            document.getElementById(
+                "quizFeedback"
+            );
+
+
+        feedback.style.display =
+            "none";
+
+        feedback.textContent =
+            "";
+
+
+        // Previous button
+
+        const prevBtn =
+            document.getElementById(
+                "quizPrevBtn"
+            );
+
+
+        prevBtn.disabled =
+            currentQuestion === 0;
+
+
+        // Next button
+
+        const nextBtn =
+            document.getElementById(
+                "quizNextBtn"
+            );
+
+
+        if (
+            currentQuestion ===
+            questions.length - 1
+        ) {
+
+            nextBtn.textContent =
+                "Finish Quiz ✓";
+
+        } else {
+
+            nextBtn.textContent =
+                "Next Question →";
+
+        }
+
+    }
+
+
+    function selectAnswer(letter) {
+
+        answers[currentQuestion] =
+            letter;
+
+
+        const question =
+            questions[currentQuestion];
+
+
+        const feedback =
+            document.getElementById(
+                "quizFeedback"
+            );
+
+
+        const buttons =
+            document.querySelectorAll(
+                ".quiz-option"
+            );
+
+
+        buttons.forEach(button => {
+
+            button.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        const selectedButton =
+            [...buttons].find(
+                button =>
+                    button
+                    .querySelector(
+                        ".option-letter"
+                    )
+                    .textContent
+                    .trim() === letter
+            );
+
+
+        if (selectedButton) {
+
+            selectedButton.classList.add(
+                "selected"
+            );
+
+        }
+
+
+        if (question.explanation) {
+
+            feedback.textContent =
+                question.explanation;
+
+            feedback.style.display =
+                "block";
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "quizNextBtn"
+    ).addEventListener(
+        "click",
+        function () {
+
+            if (
+                answers[currentQuestion] ===
+                null
+            ) {
+
+                alert(
+                    "Please select an answer first!"
+                );
+
+                return;
+            }
+
+
+            if (
+                currentQuestion <
+                questions.length - 1
+            ) {
+
+                currentQuestion++;
+
+                showQuestion();
+
+            } else {
+
+                finishQuiz();
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "quizPrevBtn"
+    ).addEventListener(
+        "click",
+        function () {
+
+            if (currentQuestion > 0) {
+
+                currentQuestion--;
+
+                showQuestion();
+
+            }
+
+        }
+    );
+
+
+    function createDots() {
+
+        const dots =
+            document.getElementById(
+                "quizDots"
+            );
+
+
+        dots.innerHTML = "";
+
+
+        questions.forEach(
+            (_, index) => {
+
+                const dot =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                dot.className =
+                    "quiz-dot-item";
+
+
+                if (
+                    index ===
+                    currentQuestion
+                ) {
+
+                    dot.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                dots.appendChild(dot);
+
+            }
+        );
+
+    }
+
+
+    async function finishQuiz() {
+
+        let score = 0;
+
+
+        questions.forEach(
+            (question, index) => {
+
+                if (
+                    answers[index] ===
+                    question.answer
+                ) {
+
+                    score++;
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "quizArea"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "quizResult"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "finalScore"
+        ).textContent =
+            `You scored ${score} / ${questions.length}`;
+
+
+        // Save quiz statistics
+
+        try {
+
+            await fetch(
+                "/api/record-quiz",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        topic:
+                            topicInput.value.trim(),
+
+                        score:
+                            score,
+
+                        total:
+                            questions.length
+
+                    })
+
+                }
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Could not save quiz statistics:",
+                error
+            );
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "restartQuizBtn"
+    ).addEventListener(
+        "click",
+        function () {
+
+            document.getElementById(
+                "quizResult"
+            ).style.display =
+                "none";
+
+
+            generator.style.display =
+                "block";
+
+
+            topicInput.focus();
+
+        }
+    );
+
+});
+</script>
+</body>
+</html>

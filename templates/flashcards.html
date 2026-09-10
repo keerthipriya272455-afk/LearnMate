@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Flashcards | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="flashcard-body">
+
+<div class="app-layout">
+
+    <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+            LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item">
+
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item active">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item">
+
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}" class="side-item">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+          class="side-item">
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+    <!-- =========================
+         MAIN AREA
+    ========================== -->
+
+    <main class="main-area flashcard-main">
+
+
+        <!-- Floating background decorations -->
+
+        <div class="fc-dot fc-dot-1"></div>
+        <div class="fc-dot fc-dot-2"></div>
+        <div class="fc-dot fc-dot-3"></div>
+        <div class="fc-dot fc-dot-4"></div>
+
+
+        <!-- Decorative emojis -->
+
+        <div class="fc-decoration fc-decoration-one">
+            🃏
+        </div>
+
+        <div class="fc-decoration fc-decoration-two">
+            ✨
+        </div>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="flashcard-hero">
+
+            <div class="fc-badge">
+
+                ✨
+                <span>AI POWERED REVISION</span>
+
+            </div>
+
+
+            <h1>
+
+                Learn Faster With
+                <span>Flashcards</span>
+
+            </h1>
+
+
+            <p>
+
+                Turn any topic into interactive flashcards
+                and remember the important concepts faster.
+
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             GENERATOR
+        ========================== -->
+
+        <section class="flashcard-generator">
+
+            <div class="generator-heading">
+
+                <div class="generator-icon">
+                    🧠
+                </div>
+
+                <div>
+
+                    <h2>
+                        Create Your Flashcards
+                    </h2>
+
+                    <p>
+                        Enter a topic and let StudyAI create
+                        your revision cards.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="generator-controls">
+
+                <input
+                    type="text"
+                    id="flashcardTopic"
+                    placeholder="Enter a topic... e.g. Electrostatics"
+                >
+
+
+                <select id="flashcardNumber">
+
+                    <option value="5">
+                        5 Cards
+                    </option>
+
+                    <option value="8">
+                        8 Cards
+                    </option>
+
+                    <option value="10">
+                        10 Cards
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    id="generateBtn">
+
+                    <span>
+                        ✨
+                    </span>
+
+                    Generate Cards
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <div class="generator-tip">
+
+                💡 Tip: Use a specific topic for better
+                exam-focused flashcards.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             LOADING
+        ========================== -->
+
+        <section
+            id="flashcardLoading"
+            class="flashcard-loading"
+            style="display:none;">
+
+            <div class="fc-loading-card">
+
+                <div class="fc-loading-icon">
+                    🃏
+                </div>
+
+            </div>
+
+
+            <h3>
+                Creating your flashcards...
+            </h3>
+
+
+            <p>
+                StudyAI is preparing your revision cards.
+            </p>
+
+        </section>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="flashcardError"
+            class="flashcard-error"
+            style="display:none;">
+        </div>
+
+
+        <!-- =========================
+             FLASHCARD AREA
+        ========================== -->
+
+        <section
+            id="flashcardArea"
+            class="flashcard-area"
+            style="display:none;">
+
+
+            <!-- HEADER -->
+
+            <div class="cards-header">
+
+                <div>
+
+                    <span>
+                        YOUR FLASHCARDS
+                    </span>
+
+                    <h2>
+                        Tap a card to flip it
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="cardCounter"
+                    class="card-counter">
+
+                    1 / 5
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD -->
+
+            <div class="card-stage">
+
+                <div
+                    id="flashcard"
+                    class="flashcard">
+
+
+                    <!-- FRONT -->
+
+                    <div
+                        class="flashcard-face flashcard-front">
+
+                        <div class="card-top">
+
+                            <span>
+                                QUESTION
+                            </span>
+
+                            <span>
+                                ✦
+                            </span>
+
+                        </div>
+
+
+                        <div class="card-main">
+
+                            <div class="big-card-icon">
+                                ?
+                            </div>
+
+                            <h2 id="cardFront"></h2>
+
+                        </div>
+
+
+                        <div class="flip-hint">
+                            ↻ Click to reveal answer
+                        </div>
+
+                    </div>
+
+
+                    <!-- BACK -->
+
+                    <div
+                        class="flashcard-face flashcard-back">
+
+                        <div class="card-top">
+
+                            <span>
+                                ANSWER
+                            </span>
+
+                            <span>
+                                ✓
+                            </span>
+
+                        </div>
+
+
+                        <div class="card-main">
+
+                            <div
+                                class="big-card-icon answer-icon">
+
+                                ✓
+
+                            </div>
+
+                            <p id="cardBack"></p>
+
+                        </div>
+
+
+                        <div class="flip-hint">
+                            ↻ Click to see question
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="card-controls">
+
+                <button
+                    type="button"
+                    class="card-control">
+
+                    ← Previous
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="flip-button">
+
+                    🔄 Flip Card
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="card-control">
+
+                    Next →
+
+                </button>
+
+            </div>
+
+
+            <!-- DOTS -->
+
+            <div
+                id="cardDots"
+                class="card-dots">
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

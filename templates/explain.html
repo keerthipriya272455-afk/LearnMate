@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explain Any Topic | LearnMate</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="explain-body">
+
+    <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="logo-cap">
+            🎓
+        </div>
+
+        <div class="logo-text">
+         LearnMate<span></span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}" class="side-item">
+
+            <div class="side-icon">
+                🏠
+            </div>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('quiz') }}" class="side-item">
+
+            <div class="side-icon">
+                ❓
+            </div>
+
+            <span>
+                Quiz
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('flashcards') }}" class="side-item">
+
+            <div class="side-icon">
+                🃏
+            </div>
+
+            <span>
+                Flashcards
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('explain') }}" class="side-item active">
+            <div class="side-icon">
+                💡
+            </div>
+
+            <span>
+                Explain
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('notes') }}" class="side-item">
+
+            <div class="side-icon">
+                📄
+            </div>
+
+            <span>
+                My Notes
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('predictor') }}" class="side-item">
+
+            <div class="side-icon">
+                🎯
+            </div>
+
+            <span>
+                Predictor
+            </span>
+
+        </a>
+
+
+        <!-- STUDY PLANNER -->
+
+        <a href="{{ url_for('planner') }}"
+           class="side-item">
+
+            <div class="side-icon">
+                📅
+            </div>
+
+            <span>
+                Study Planner
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="explain-main">
+
+        <!-- Animated background -->
+        <div class="explain-orb explain-orb-1"></div>
+        <div class="explain-orb explain-orb-2"></div>
+        <div class="explain-orb explain-orb-3"></div>
+
+        <div class="floating-star star-1">✦</div>
+        <div class="floating-star star-2">✦</div>
+        <div class="floating-star star-3">✦</div>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="explain-hero">
+
+            <div class="explain-badge">
+                ✨
+                <span>AI POWERED EXPLANATION</span>
+            </div>
+
+            <h1>
+                Explain Any
+                <span>Topic</span>
+            </h1>
+
+            <p>
+                Get easy to understand explanations in English and Telugu.
+                <br>
+                Listen, learn and master any concept.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             TOPIC INPUT
+        ========================== -->
+
+        <section class="explain-generator">
+
+            <div class="generator-top">
+
+                <div class="generator-icon">
+                    ✏️
+                </div>
+
+                <div>
+                    <h2>Enter a topic to explain</h2>
+
+                    <p>
+                        Ask StudyAI about any concept and get a simple,
+                        exam-friendly explanation.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="explain-input-area">
+
+                <input
+                    type="text"
+                    id="topicInput"
+                    placeholder="e.g. Thermodynamics"
+                    autocomplete="off"
+                >
+
+                <button
+    type="button"
+    id="explainBtn">
+    ✨ Explain Topic →
+</button>
+
+            </div>
+
+
+            <div class="explain-tip">
+                💡 Tip: Be specific for better explanations
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             LOADING
+        ========================== -->
+
+        <section
+            id="loading"
+            class="explain-loading"
+            style="display:none;"
+        >
+
+            <div class="loading-animation">
+                🧠
+            </div>
+
+            <h3>
+                Understanding your topic...
+            </h3>
+
+            <p>
+                StudyAI is preparing your explanation.
+            </p>
+
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ERROR
+        ========================== -->
+
+        <div
+            id="error"
+            class="explain-error"
+            style="display:none;"
+        ></div>
+
+
+        <!-- =========================
+             RESULT
+        ========================== -->
+
+        <section
+            id="result"
+            class="explain-result"
+            style="display:none;"
+        >
+
+            <!-- Result header -->
+
+            <div class="result-top">
+
+                <div class="result-title-area">
+
+                    <div class="result-icon">
+                        📖
+                    </div>
+
+                    <div>
+                        <span class="result-label">
+                            AI EXPLANATION
+                        </span>
+
+                        <h2 id="resultTitle">
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <!-- Voice controls -->
+
+                <div class="voice-controls">
+
+                    <button
+                        type="button"
+                        id="englishVoiceBtn"
+                        class="modern-voice-btn english"
+                    >
+                        🔊 English Voice
+                    </button>
+
+                    <button
+    type="button"
+    id="teluguVoiceBtn">
+    🇮🇳 Telugu
+    🌐 Telugu Voice
+</button>
+                        
+                   
+
+                    <button
+                        type="button"
+                        id="stopVoiceBtn"
+                        class="modern-voice-btn stop"
+                    >
+                        🟥 Stop
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Voice status -->
+
+            <div
+                id="voiceStatus"
+                class="voice-status"
+            ></div>
+
+
+            <!-- =========================
+                 EXPLANATION CARDS
+            ========================== -->
+
+            <div class="explanation-grid">
+
+
+                <!-- Simple explanation -->
+
+                <article class="explanation-card simple-card">
+
+                    <div class="card-heading">
+
+                        <div class="card-icon">
+                            🌱
+                        </div>
+
+                        <h3>
+                            Simple Explanation
+                        </h3>
+
+                    </div>
+
+                    <p id="simpleExplanation"></p>
+
+                </article>
+
+
+                <!-- How it works -->
+
+                <article class="explanation-card">
+
+                    <div class="card-heading">
+
+                        <div class="card-icon">
+                            ⚙️
+                        </div>
+
+                        <h3>
+                            How It Works
+                        </h3>
+
+                    </div>
+
+                    <p id="howItWorks"></p>
+
+                </article>
+
+
+                <!-- Important points -->
+
+                <article class="explanation-card">
+
+                    <div class="card-heading">
+
+                        <div class="card-icon">
+                            ⭐
+                        </div>
+
+                        <h3>
+                            Important Points
+                        </h3>
+
+                    </div>
+
+                    <ul id="importantPoints"></ul>
+
+                </article>
+
+
+                <!-- Example -->
+
+                <article class="explanation-card">
+
+                    <div class="card-heading">
+
+                        <div class="card-icon">
+                            🧠
+                        </div>
+
+                        <h3>
+                            Example
+                        </h3>
+
+                    </div>
+
+                    <p id="example"></p>
+
+                </article>
+
+
+                <!-- Quick revision -->
+
+                <article class="explanation-card quick-card">
+
+                    <div class="card-heading">
+
+                        <div class="card-icon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            Quick Revision
+                        </h3>
+
+                    </div>
+
+                    <p id="quickRevision"></p>
+
+                </article>
+
+            </div>
+
+
+            <!-- =========================
+                 VOICE FEATURE CARDS
+            ========================== -->
+
+            <div class="voice-feature-grid">
+
+                <div class="voice-feature english-feature">
+
+                    <div class="feature-icon">
+                        🎧
+                    </div>
+
+                    <div>
+                        <h3>English Voice</h3>
+                        <p>
+                            Listen to the explanation
+                            in English
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="voice-feature telugu-feature">
+
+                    <div class="feature-icon">
+                        🌐
+                    </div>
+
+                    <div>
+                        <h3>Telugu Voice</h3>
+                        <p>
+                            Listen to the explanation
+                            in Telugu
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="voice-feature stop-feature">
+
+                    <div class="feature-icon">
+                        🟥
+                    </div>
+
+                    <div>
+                        <h3>Stop</h3>
+                        <p>
+                            Stop any ongoing
+                            voice playback
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- New topic -->
+
+            <button
+                type="button"
+                id="newTopicBtn"
+                class="new-topic-btn"
+            >
+                🔄 Explain Another Topic
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
